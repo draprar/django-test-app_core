@@ -1,0 +1,37 @@
+{% extends 'test_app/base.html' %}
+{% load static %}
+{% block title %}Driving Test{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Driving Test</h1>
+<form method="post" class="p-4 border rounded shadow-sm">
+    {% csrf_token %}
+    <div id="timer" class="alert alert-warning text-center">Time left: 20:00</div>
+    {% for question in questions %}
+        <div class="mb-3">
+            <h5>{{ question.text }}</h5>
+            {% for answer in question.answers.all %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="answers" value="{{ answer.id }}" id="answer-{{ answer.id }}">
+                    <label class="form-check-label" for="answer-{{ answer.id }}">{{ answer.text }}</label>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary w-100">Submit</button>
+</form>
+
+<script>
+    let timeLeft = {{ timer }};
+    const timerElement = document.getElementById('timer');
+    const countdown = setInterval(() => {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerElement.textContent = `Time left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        if (--timeLeft < 0) {
+            clearInterval(countdown);
+            document.querySelector('form').submit();
+        }
+    }, 1000);
+</script>
+{% endblock %}
