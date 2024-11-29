@@ -1,6 +1,9 @@
 
 # Driving Test Application
 
+![Screenshot](media/Screenshot_1.png)
+![Screenshot](media/Screenshot_2.png)
+
 This is a Django-based application for a driving test quiz.
 
 ## Features
